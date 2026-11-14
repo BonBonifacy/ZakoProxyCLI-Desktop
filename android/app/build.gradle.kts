@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
 }
 
-val webDist: File = file("../../ZakoProxyCLI-0.13.3/web/dist")
+val webDist: File = file("../../src/ZakoProxyCLI-0.14.0/web/dist")
 
 android {
     namespace = "io.zakoai.proxy"
@@ -13,8 +13,8 @@ android {
         applicationId = "io.zakoai.proxy"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1303
-        versionName = "0.13.3"
+        versionCode = 1400
+        versionName = "0.14.0"
     }
 
     signingConfigs {
@@ -72,7 +72,11 @@ dependencies {
 }
 
 val stageWeb = tasks.register<Copy>("stageWeb") {
-    onlyIf { webDist.isDirectory }
+    doFirst {
+        if (!webDist.isDirectory) {
+            throw GradleException("Missing frontend dist at $webDist; run npm ci && npm run build in web/ first.")
+        }
+    }
     from(webDist)
     into(layout.buildDirectory.dir("staged-web/web"))
 }

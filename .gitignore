@@ -10,3 +10,5 @@ web/dist/
 windows/*.exe
 windows/*.dll
 android/gradle/wrapper/*.zip
+.backup/
+out/

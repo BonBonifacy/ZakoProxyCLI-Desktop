@@ -1,8 +1,8 @@
-# ZakoAI Proxy 0.13.3 · Android
+# ZakoAI Proxy 0.14.0 · Android
 
-APK：`ZakoAIProxy-0.13.3-android.apk`（本地调试签名，可直接安装）
+APK：`ZakoAIProxy-0.14.0-android.apk`（本地调试签名，可直接安装）
 
-- 包名 `io.zakoai.proxy`，版本 0.13.3（versionCode 1303），minSdk 26（Android 8.0），targetSdk 35
+- 包名 `io.zakoai.proxy`，版本 0.14.0（versionCode 1400），minSdk 26（Android 8.0），targetSdk 35
 - ABI：`arm64-v8a` / `armeabi-v7a` / `x86_64`
 - 权限：网络、前台服务、通知（后台保活）
 - 控制台资源随 APK 内置，离线可用
@@ -27,7 +27,7 @@ APK：`ZakoAIProxy-0.13.3-android.apk`（本地调试签名，可直接安装）
 ## 从源码重建
 
 ```bash
-cd src/ZakoProxyCLI-0.13.3
+cd src/ZakoProxyCLI-0.14.0
 ANDROID_NDK_HOME=<sdk>/ndk/27.2.12479018 \
   cargo +nightly build --release --lib -Z build-std=std,panic_abort \
   --target aarch64-linux-android        # 同法编 armv7 / x86_64

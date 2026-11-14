@@ -1,10 +1,10 @@
 #requires -Version 5.1
 <#
-    Packages the Windows deliverables for ZakoAI Proxy 0.13.3.
+    Packages the Windows deliverables for ZakoAI Proxy.
 
-      1. directory edition  -> <Release>\ZakoAI-Proxy-0.13.3-Windows-x64\   and .zip
-      2. single file        -> <Release>\ZakoAI-Proxy-0.13.3-Windows-x64.exe
-                               (launcher + appended zip payload: zakoai-proxy.exe, web\, assets\)
+      1. directory edition  -> <Release>\ZakoAI-Proxy-<Version>-Windows-x64\   and .zip
+      2. single file        -> <Release>\ZakoAI-Proxy-<Version>-Windows-x64.exe
+                               (launcher + appended zip payload: zakoai_proxy.dll, web\, assets\)
 
     The payload is a plain deflate zip appended to the launcher image; the trailing
     length is written into a 46-character UTF-16 slot that the launcher embeds
@@ -14,7 +14,7 @@ param(
     [Parameter(Mandatory = $true)][string]$BuildDir,      # ...\src (crate root with target\release)
     [Parameter(Mandatory = $true)][string]$WorkDir,       # ...\work
     [Parameter(Mandatory = $true)][string]$ReleaseDir,    # ...\release
-    [string]$Version = '0.13.3'
+    [string]$Version = '0.14.0'
 )
 
 $ErrorActionPreference = 'Stop'
