@@ -1,7 +1,7 @@
 # ZakoAI Proxy · Windows 10/11 与 Android 打包仓
 
 上游：[mizaawa/ZakoProxyCLI](https://github.com/mizaawa/ZakoProxyCLI)
-本仓基线：**v0.14.0**（同步上游 0.14.0 完整冷咖啡策略模板目录与平台一致性修复后重新打包）
+本仓基线：**v0.14.2**（同步上游 v0.14.1 GPT-6.2 Astra/Sol 策略与 v0.14.2 控制台全页面加载提速后重新打包）
 
 ## 构建产物（GitHub Actions）
 
@@ -9,18 +9,18 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| `ZakoAI-Proxy-0.14.0-Windows-x64.exe` | Windows 单文件版，双击即用（自动展开 DLL 与控制台资源） |
-| `ZakoAI-Proxy-0.14.0-Windows-x64.zip` | Windows 目录版，解压后跑 `start.bat` |
-| `ZakoAIProxy-0.14.0-android.apk` | Android 安装包，包名 `io.zakoai.proxy`，minSdk 26 / targetSdk 35 |
+| `ZakoAI-Proxy-0.14.2-Windows-x64.exe` | Windows 单文件版，双击即用（自动展开 DLL 与控制台资源） |
+| `ZakoAI-Proxy-0.14.2-Windows-x64.zip` | Windows 目录版，解压后跑 `start.bat` |
+| `ZakoAIProxy-0.14.2-android.apk` | Android 安装包，包名 `io.zakoai.proxy`，minSdk 26 / targetSdk 35 |
 | `SHA256SUMS.txt` | 三个产物的校验值 |
 
-> Android 工程的 `app/src/main/jniLibs/<abi>/libzakoai.so` 由 CI 调用 `src/ZakoProxyCLI-0.14.0/build-android.sh` 自动交叉编译；本地需要手动出包时也可先运行该脚本再执行 `gradle assembleRelease`。
+> Android 工程的 `app/src/main/jniLibs/<abi>/libzakoai.so` 由 CI 调用 `src/ZakoProxyCLI-0.14.2/build-android.sh` 自动交叉编译；本地需要手动出包时也可先运行该脚本再执行 `gradle assembleRelease`。
 
 ## 仓库结构
 
 ```
 .github/workflows/         GitHub Actions 自动构建（Windows EXE/ZIP + Android APK）
-src/ZakoProxyCLI-0.14.0/   上游 0.14.0 源码 + 本次改造（Rust / 前端）
+src/ZakoProxyCLI-0.14.2/   上游 0.14.2 源码 + 本次改造（Rust / 前端）
 android/                   Android 工程（AGP 8.7.3 / Gradle 8.9 / JDK 21）
 windows/                   Windows 启动器源码 ZakoAI.Desktop.cs
 scripts/                   打包脚本 pack-win.ps1
@@ -33,7 +33,7 @@ release/                   发布说明/产物目录
 
 ### 1. 便携化（沿用 0.13.2 时期改造，已随 0.13.3 重编）
 
-- `src/ZakoProxyCLI-0.14.0/src/presets.rs`：新增 26 条服务商预设与 `AuthStyle` 枚举
+- `src/ZakoProxyCLI-0.14.2/src/presets.rs`：新增 26 条服务商预设与 `AuthStyle` 枚举
 - `api.rs`：`/api/presets`、`/api/accounts/parse-credential` 两个接口 + 粘贴式凭据解析
 - `proxy.rs`：按账号 `auth_style` 分派 `Authorization` / `x-api-key` / `x-goog-api-key`；
   修正 `/v1beta/openai` 被二次拼 `/v1` 的 404
@@ -42,19 +42,19 @@ release/                   发布说明/产物目录
 - `embedded.rs` / `launcher.rs`：JNI 与 DLL 两个宿主入口
 - `web/src/PresetPicker.tsx` 等：预设选择器与粘贴导入 UI
 
-### 2. 本次（0.14.0）同步与改动
+### 2. 本次（0.14.2）同步与改动
 
-- 同步上游 `v0.14.0`：完整冷咖啡策略模板目录（`/api/profile-templates` + `Management.tsx` 模板选择器）、历史预设迁移兼容与跨平台 hash 规范化
-- 保留本仓定制：`presets.rs` 26 条预设与粘贴式凭据解析、`zako-break` 策略、`embedded.rs` / `launcher.rs` 宿主入口、移除横幅广告
-- 版本号全线升到 `0.14.0`：`Cargo.toml`、`Cargo.android.toml`、`Cargo.lock`、`web/package.json`、`android/app/build.gradle.kts`（versionCode 1400）、`BuildInfo.java`、`Installer.java`（动态跟随 `BuildInfo.VERSION`）、`ZakoAI.Desktop.cs`、`pack-win.ps1`
-- 修复 `android/app/build.gradle.kts` 中 `webDist` 相对路径及 `build-android.sh` 在 Linux runner 下的 `llvm-ar` 路径问题
-- 新增 `.github/workflows/build.yml` 自动完成前端构建、Rust 测试、Windows EXE/ZIP 打包与 Android 三 ABI APK 构建
+- 同步上游 `v0.14.1`：新增 GPT-6.2 Astra / Sol（`coldcoffee-gpt-6.2-astra-v1`、`coldcoffee-gpt-6.2-sol-v1`）独立精确绑定策略与冷咖啡模板来源修订
+- 同步上游 `v0.14.2`：控制台全页面加载提速（按页懒加载分包、前端会话级内存缓存 `ResourceCache`、列表 50 行分页、Vite 预压缩 `.gz` + `ServeFile::precompressed_gzip()`、`/api/keys?usage=false` / `/api/profiles?summary=true` / `/api/stats?recent=false` 轻量查询与 SQLite 按键聚合优化）
+- 保留本仓定制：`presets.rs` 26 条预设与粘贴式凭据解析、`zako-break` 策略、`embedded.rs` / `launcher.rs` 宿主入口、移除横幅广告、静态资源扩展名 `Content-Type` 显式映射（规避 Windows 注册表 MIME 覆盖导致的 `nosniff` 白屏）
+- 版本号全线升到 `0.14.2`：`Cargo.toml`、`Cargo.android.toml`、`Cargo.lock`、`web/package.json`、`web/package-lock.json`、`Dockerfile`、`android/app/build.gradle.kts`（versionCode 1402）、`BuildInfo.java`、`ZakoAI.Desktop.cs`、`pack-win.ps1`
+- `.github/workflows/build.yml` 同步升至 `0.14.2` 并补充前端单元测试与构建产物检查（`npm test` / `npm run test:build`）
 
 ## 从源码重建
 
 ```bash
 # 1. Rust（Windows）
-cd src/ZakoProxyCLI-0.14.0
+cd src/ZakoProxyCLI-0.14.2
 cargo build --release            # → target/release/{zakoai-proxy.exe, zakoai_proxy.dll}
 
 # 2. 前端

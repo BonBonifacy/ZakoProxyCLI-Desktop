@@ -1,15 +1,15 @@
-# ZakoAI Proxy 0.14.0 · Windows 10/11 x64
+# ZakoAI Proxy 0.14.2 · Windows 10/11 x64
 
 两种形态，任选其一：
 
 | 文件 | 说明 |
 | --- | --- |
-| `ZakoAI-Proxy-0.14.0-Windows-x64.exe` | **单文件**：内嵌服务端与控制台资源，首次运行自动展开到同目录 |
-| `ZakoAI-Proxy-0.14.0-Windows-x64.zip` | **目录版**：解压即用，`start.bat` 或 `ZakoAI.Desktop.exe` 启动 |
+| `ZakoAI-Proxy-0.14.2-Windows-x64.exe` | **单文件**：内嵌服务端与控制台资源，首次运行自动展开到同目录 |
+| `ZakoAI-Proxy-0.14.2-Windows-x64.zip` | **目录版**：解压即用，`start.bat` 或 `ZakoAI.Desktop.exe` 启动 |
 
 ## 单文件版用法
 
-1. 把 `ZakoAI-Proxy-0.14.0-Windows-x64.exe` 放到任意可写目录（如 `D:\Apps\ZakoAI\`）。
+1. 把 `ZakoAI-Proxy-0.14.2-Windows-x64.exe` 放到任意可写目录（如 `D:\Apps\ZakoAI\`）。
 2. 双击运行。首次启动会从 exe 尾部展开 5 个组成部分：
 
    ```
@@ -34,7 +34,7 @@
 ## 目录结构（首次运行后）
 
 ```
-ZakoAI-Proxy-0.14.0-Windows-x64.exe   ← 程序本体（含内嵌载荷）
+ZakoAI-Proxy-0.14.2-Windows-x64.exe   ← 程序本体（含内嵌载荷）
 zakoai-proxy.exe                      ← 首次运行自动展开
 web\                                  ← 控制台资源（展开得到）
 data\                                 ← SQLite 数据库、master.key
@@ -55,7 +55,7 @@ zako.ico
 ## 从源码重建
 
 ```powershell
-cd src\ZakoProxyCLI-0.14.0
+cd src\ZakoProxyCLI-0.14.2
 cargo build --release                                  # zakoai-proxy.exe
 cd web; npm ci; npm run build; cd ..                   # web\dist
 csc /target:winexe /out:ZakoAI.Desktop.exe ..\windows\ZakoAI.Desktop.cs `

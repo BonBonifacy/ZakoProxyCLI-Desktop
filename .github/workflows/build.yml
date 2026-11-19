@@ -19,8 +19,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_VERSION: "0.14.0"
-  CRATE_DIR: src/ZakoProxyCLI-0.14.0
+  APP_VERSION: "0.14.2"
+  CRATE_DIR: src/ZakoProxyCLI-0.14.2
 
 jobs:
   verify-and-frontend:
@@ -39,13 +39,15 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: src/ZakoProxyCLI-0.14.0/web/package-lock.json
+          cache-dependency-path: src/ZakoProxyCLI-0.14.2/web/package-lock.json
 
       - name: Build frontend console
         working-directory: ${{ env.CRATE_DIR }}/web
         run: |
           npm ci
+          npm test
           npm run build
+          npm run test:build
 
       - uses: actions/upload-artifact@v4
         with:
@@ -92,7 +94,7 @@ jobs:
         shell: pwsh
         run: |
           powershell -ExecutionPolicy Bypass -File scripts/pack-win.ps1 `
-            -BuildDir "${{ github.workspace }}\src\ZakoProxyCLI-0.14.0" `
+            -BuildDir "${{ github.workspace }}\src\ZakoProxyCLI-0.14.2" `
             -WorkDir "${{ github.workspace }}" `
             -ReleaseDir "${{ github.workspace }}\out" `
             -Version "${{ env.APP_VERSION }}"

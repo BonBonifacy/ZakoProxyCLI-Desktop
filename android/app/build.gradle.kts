@@ -2,7 +2,7 @@ plugins {
     id("com.android.application")
 }
 
-val webDist: File = file("../../src/ZakoProxyCLI-0.14.0/web/dist")
+val webDist: File = file("../../src/ZakoProxyCLI-0.14.2/web/dist")
 
 android {
     namespace = "io.zakoai.proxy"
@@ -13,8 +13,8 @@ android {
         applicationId = "io.zakoai.proxy"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1400
-        versionName = "0.14.0"
+        versionCode = 1402
+        versionName = "0.14.2"
     }
 
     signingConfigs {

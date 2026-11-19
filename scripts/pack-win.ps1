@@ -14,7 +14,7 @@ param(
     [Parameter(Mandatory = $true)][string]$BuildDir,      # ...\src (crate root with target\release)
     [Parameter(Mandatory = $true)][string]$WorkDir,       # ...\work
     [Parameter(Mandatory = $true)][string]$ReleaseDir,    # ...\release
-    [string]$Version = '0.14.0'
+    [string]$Version = '0.14.2'
 )
 
 $ErrorActionPreference = 'Stop'
