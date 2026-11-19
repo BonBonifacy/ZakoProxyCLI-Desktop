@@ -301,9 +301,10 @@ async fn console(State(state): State<Shared>, request: Request) -> Response {
                 .into_response();
         }
     };
-    let cacheable = response.status().is_success() || response.status() == StatusCode::NOT_MODIFIED;
+    let ok = response.status().is_success();
+    let cacheable = ok || response.status() == StatusCode::NOT_MODIFIED;
     let h = response.headers_mut();
-    if response.status().is_success() {
+    if ok {
         let content = if !asset {
             Some("text/html; charset=utf-8")
         } else {
