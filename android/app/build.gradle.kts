@@ -71,13 +71,17 @@ dependencies {
     implementation("androidx.webkit:webkit:1.12.1")
 }
 
-val stageWeb = tasks.register<Copy>("stageWeb") {
+val stageWeb = tasks.register<Sync>("stageWeb") {
     doFirst {
         if (!webDist.isDirectory) {
             throw GradleException("Missing frontend dist at $webDist; run npm ci && npm run build in web/ first.")
         }
     }
-    from(webDist)
+    // Android AAPT merges *.gz alongside its uncompressed sibling as a duplicate asset key;
+    // loopback serving on-device does not need precompressed .gz copies.
+    from(webDist) {
+        exclude("**/*.gz")
+    }
     into(layout.buildDirectory.dir("staged-web/web"))
 }
 
